@@ -1,0 +1,23 @@
+sudo: required
+
+language: c
+
+services:
+  - docker
+
+before_install:
+  - export BAGTAINER_ID="0002"
+  - docker build -t bagtainers/${BAGTAINER_ID} ${BAGTAINER_ID}/data/container/.
+#  - mkdir -p ~/o2r/bag
+  - mkdir -p ~/o2r/run
+#  - cp -r ${BAGTAINER_ID}/* ~/o2r/bag
+#- docker run bagtainers/0002
+#- docker ps -a
+#- docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+
+script:
+- docker run --user 1000 -v ${BAGTAINER_ID}:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/${BAGTAINER_ID}
+
+notifications:
+  email:
+    - daniel.nuest@uni-muenster.de
