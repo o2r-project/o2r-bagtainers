@@ -63,6 +63,11 @@ $ ll data/output
 * Output was created using `rmarkdown` by sourcing the script file `Bagtainer.R` from RStudio
 * Dockerfile was manually created
 * The result comparison happens _in_ the container as part of executing the main script
+* Manually created files listing all the installed packages in the container directory by creating them in the Dockerfile and then extracting them from the host
+  * `user@host:.../0002/data/container$ docker exec <container_name> apt --installed list > apt-installed.txt`
+  * `user@host:.../0002/data/container$ docker exec <container_name> dpkg -l > dpkg-list.txt`
+* The analysis is executed as the non-root user "docker" having the UID/GID 1000
+  * The directories mounted from the host must be owned by a user with the same id!
 
 TODO:
 * Image was manually saved and removed using the following commands
@@ -72,15 +77,13 @@ docker save --output $ID.tar bagtainer-0001:latest
 docker rmi 8d1075752e2e
 ```
 
-
 ### Reproduce the analysis
 
 * Load the image with `docker load < data/container/bagtainerimage.tar`
   * image is listed in `docker images`
-* Start the image (one off run) and pass the bag and output directory: `docker run --rm -v $(pwd)/../..:/bag:ro -v /tmp/o2r:/o2r_run:rw 01fc22`
+* Start the image (one off run) and pass the bag and output directory: `docker run --rm --user 1000 -v $(pwd)/../..:/bag:ro -v /tmp/o2r:/o2r_run:rw 01fc22`
   * The bag is mounted as read only (`:ro`)
-  * The run directory is mounted as read-write (`:rw`) and contains a new directory after the run named `<bagtainerid>_YYYYMMDD_HHMMSS`
-
+  * The run directory is mounted as read-write (`:rw`) and contains a new directory after the run named `<bagtainerid>_YYYYMMDD_HHMMSS` (the mounted directory on the host must be owned by the user with the GID `1000`)
 
 ### Compare the results
 
