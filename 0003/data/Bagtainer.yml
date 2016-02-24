@@ -1,0 +1,14 @@
+---
+id: xyELNnSUvB
+version: 0.2
+bag_mount: "/bag"
+run_mount: "/o2r_run"
+data:
+    working_directory: "wd"
+    run_file: "Bagtainer.R"
+    config_file: "Bagtainer.yml"
+    container: "container"
+packages:
+    - rmarkdown
+    - digest
+command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = 'md_document')"
