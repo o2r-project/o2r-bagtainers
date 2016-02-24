@@ -7,21 +7,23 @@ services:
   - docker
 
 env:
-#  - BAGTAINER_ID="0002"
   - BAGTAINER_ID="0002"
+#  - BAGTAINER_ID="0003"
 
 install:
   - docker build -t bagtainers/$BAGTAINER_ID $BAGTAINER_ID/data/container/.
-#  - mkdir -p ~/o2r/bag
+
+before_script:
+  - printenv
   - mkdir -p ~/o2r/run
-#  - cp -r ${BAGTAINER_ID}/* ~/o2r/bag
+#  - useradd docker
+#  - chown docker:docker ~/o2r/run
   - id
   - ls -l ~/o2r
   - ls -l ~/o2r/run
 
 script:
-- docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
-# TODO shell script that checks if there were errors?
+- docker run --user travis -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
 
 notifications:
   email:
