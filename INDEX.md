@@ -136,3 +136,55 @@ root@9f5c44fdf69b:/# sha1sum /bag/data/wd/lab02-solution.pdf
 root@9f5c44fdf69b:/# sha1sum /o2r_run/xyELNnSUvB_20160223_154630/wd/lab02-solution.pdf
 69b1a010b974b39836fad6fc2ca54490818ee85a  /o2r_run/xyELNnSUvB_20160223_154630/wd/lab02-solution.pdf
 ```
+
+## 0003
+
+A clone of `0002`, but with the following changes:
+
+* The output is a plain Markdown output document based on `rmarkdown`.
+* The volume is started with an explicit timezone, i.e. the one used during creation of the original documents. The following two commans result in same file hash for the created document `lab02-solution.md`:
+  * `docker run -it -v $(pwd)/0003:/bag:ro -v /tmp/o2r_run:/o2r_run:rw -v /etc/localtime:/etc/localtime:ro bagtainers/0003` > use the host system time zone
+  * `docker run -it -v $(pwd)/0003:/bag:ro -v /tmp/o2r_run:/o2r_run:rw -e TZ=CET bagtainers/0003`
+* The output check function uses **only the root working directory**, so that this analysis actually succeeds. It does not compare the output images in `<wd>/lab02-solution_files`!
+
+### Reproduce the analysis
+
+* See above (but set environment variable with `-e TZ=CET`)
+
+### Compare the results
+
+* Comparison result as run on Travis: https://travis-ci.org/nuest/bagtainers/jobs/111497998
+```
+/usr/bin/pandoc +RTS -K512m -RTS lab02-solution.utf8.md --to markdown_strict --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output lab02-solution.md --standalone
+
+Output created: lab02-solution.md
+[o2r] file sizes of original:
+            /bag/data/wd/ifgi.jpg /bag/data/wd/lab02-solution_files
+                            25864                              4096
+   /bag/data/wd/lab02-solution.md   /bag/data/wd/lab02-solution.Rmd
+                            21473                             13559
+         /bag/data/wd/meteo.RData
+                           236800
+[o2r] file sizes of run output:
+            /o2r_run/xyELNnSUvB_20160224_151600/wd/ifgi.jpg
+                                                      25864
+/o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution_files
+                                                       4096
+   /o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution.md
+                                                      21473
+  /o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution.Rmd
+                                                      13559
+         /o2r_run/xyELNnSUvB_20160224_151600/wd/meteo.RData
+                                                     236800
+[o2r] comparing /bag/data/wd/ifgi.jpg with /o2r_run/xyELNnSUvB_20160224_151600/wd/ifgi.jpg
+[o2r] comparing /bag/data/wd/lab02-solution_files with /o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution_files
+[o2r] comparing /bag/data/wd/lab02-solution.md with /o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution.md
+[o2r] comparing /bag/data/wd/lab02-solution.Rmd with /o2r_run/xyELNnSUvB_20160224_151600/wd/lab02-solution.Rmd
+[o2r] comparing /bag/data/wd/meteo.RData with /o2r_run/xyELNnSUvB_20160224_151600/wd/meteo.RData
+[o2r] reproduction successful using container ee14a4fcd91b
+
+
+The command "docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID" exited with 0.
+
+Done. Your build exited with 0.
+```

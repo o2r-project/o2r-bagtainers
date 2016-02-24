@@ -19,7 +19,7 @@ before_script:
 
 script:
   - id
-  - docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
+  - docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw -e TZ=CET bagtainers/$BAGTAINER_ID
 
 notifications:
   email:

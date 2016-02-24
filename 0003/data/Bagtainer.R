@@ -84,11 +84,38 @@ unlink(".Rhistory")
 # compare input and output
 file.size_directory <- function(dir, recursive = TRUE) {
   .files <- list.files(dir, recursive = recursive, full.names = TRUE)
+  if(!recursive) {
+    .files <- .files[!file.info(.files)$isdir] # remove directories
+  }
   allDigests <- sapply(X = .files, FUN = file.size)
   names(allDigests) <- normalizePath(.files)
   return(allDigests)
 }
 
+digest_directory <- function(dir, recursive = TRUE) {
+  .files <- list.files(dir, recursive = recursive, full.names = TRUE)
+  if(!recursive) {
+    .files <- .files[!file.info(.files)$isdir] # remove directories
+  }
+  allDigests <- sapply(X = .files, FUN = digest, file = TRUE, algo = "sha256")
+  names(allDigests) <- .files
+  return(allDigests)
+}
+
+# file hashes
+if(o2r_isRunningInBagtainer()) {
+  hashes_original <- digest_directory(dir = file.path(bagtainer$bag_mount, "data/wd"), recursive = FALSE)
+} else {
+  hashes_original <- digest_directory(dir = getwd(), recursive = FALSE)
+}
+cat("[o2r] digests of original:\n")
+print(hashes_original)
+
+hashes_run_output <- digest_directory(dir = file.path(run_directory), recursive = FALSE)
+cat("[o2r] digests of run output:\n")
+print(hashes_run_output)
+
+# file sizes
 cat("[o2r] file sizes of original:\n")
 if(o2r_isRunningInBagtainer()) {
   sizes_orig <- file.size_directory(dir = file.path(bagtainer$bag_mount, "data/wd"), recursive = FALSE)
@@ -100,13 +127,24 @@ cat("[o2r] file sizes of run output:\n")
 sizes_run <- file.size_directory(dir = run_directory, recursive = FALSE)
 print(sizes_run)
 
-# actual comparison
+# actual comparison of file sizes
 for (i in seq(along=sizes_orig)) {
-  cat("[o2r] comparing", names(sizes_orig[i]), "with", names(sizes_run[i]), "\n")
+  cat("[o2r] comparing file size of", names(sizes_orig[i]), "with", names(sizes_run[i]), "\n")
   # identical even compares names - they are useful for debugging, so strip them before comparison
   .orig <- sizes_orig[i]
   names(.orig) <- NULL
   .run <- sizes_run[i]
+  names(.run) <- NULL
+  stopifnot(identical(.orig, .run))
+}
+
+# actual comparison of hashes
+for (i in seq(along=hashes_original)) {
+  cat("[o2r] comparing hashes of", names(hashes_original[i]), "with", names(hashes_run_output[i]), "\n")
+  # identical even compares names - they are useful for debugging, so strip them before comparison
+  .orig <- hashes_original[i]
+  names(.orig) <- NULL
+  .run <- hashes_run_output[i]
   names(.run) <- NULL
   stopifnot(identical(.orig, .run))
 }

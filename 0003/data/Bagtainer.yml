@@ -1,5 +1,5 @@
 ---
-id: xyELNnSUvB
+id: EFVEwqOdmh
 version: 0.2
 bag_mount: "/bag"
 run_mount: "/o2r_run"
@@ -11,4 +11,4 @@ data:
 packages:
     - rmarkdown
     - digest
-command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = 'md_document')"
+command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = c('md_document'))"
