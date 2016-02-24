@@ -20,7 +20,7 @@ install:
 #- docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
 
 script:
-- docker run --user 1000 -v ($pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
+- docker run --user 1000 -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
 # TODO shell script that checks if there were errors?
 
 notifications:
