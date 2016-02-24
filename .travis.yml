@@ -1,13 +1,17 @@
 sudo: required
+# dist: trusty # see https://docs.travis-ci.com/user/ci-environment
 
 language: c
 
 services:
   - docker
 
-before_install:
-  - export BAGTAINER_ID="0002"
-  - docker build -t bagtainers/${BAGTAINER_ID} ${BAGTAINER_ID}/data/container/.
+env:
+#  - BAGTAINER_ID="0002"
+  - BAGTAINER_ID="0002"
+
+install:
+  - docker build -t bagtainers/$BAGTAINER_ID $BAGTAINER_ID/data/container/.
 #  - mkdir -p ~/o2r/bag
   - mkdir -p ~/o2r/run
 #  - cp -r ${BAGTAINER_ID}/* ~/o2r/bag
@@ -16,7 +20,8 @@ before_install:
 #- docker run carlad/sinatra /bin/sh -c "cd /root/sinatra; bundle exec rake test"
 
 script:
-- docker run --user 1000 -v ${BAGTAINER_ID}:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/${BAGTAINER_ID}
+- docker run --user 1000 -v ($pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
+# TODO shell script that checks if there were errors?
 
 notifications:
   email:
