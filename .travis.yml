@@ -17,13 +17,13 @@ before_script:
   - printenv
   - mkdir -p ~/o2r/run
 #  - useradd docker
-#  - chown docker:docker ~/o2r/run
+  - chown docker:docker ~/o2r/run
   - id
   - ls -l ~/o2r
   - ls -l ~/o2r/run
 
 script:
-- docker run --user travis -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
+- docker run --user docker -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
 
 notifications:
   email:
