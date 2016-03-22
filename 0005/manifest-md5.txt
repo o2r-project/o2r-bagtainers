@@ -1,0 +1,7 @@
+78172cf22434815a7a2fa395c4b41555  data/Bagtainer.yml
+b58dae6e19d877eaf9cc6288a6c8a7e3  data/Bagtainer.R
+08795330427ac40c648fa93d3260d949  data/wd/ifgi.jpg
+299d6b675ae510ac03d6d23b9e46c892  data/container/Dockerfile
+7c518853e3b707f608b80dd4c15aa7ab  data/wd/lab02-solution.pdf
+7b409639a376c56a0ede78d72dc27f5d  data/wd/lab02-solution.Rmd
+725b21a81d14b6feb557e294761a8ed9  data/wd/meteo.RData

@@ -9,6 +9,7 @@ services:
 env:
 #  - BAGTAINER_ID="0002"
   - BAGTAINER_ID="0003"
+  - BAGTAINER_ID="0004"
 
 install:
   - docker build -t bagtainers/$BAGTAINER_ID $BAGTAINER_ID/data/container/.
@@ -19,7 +20,7 @@ before_script:
 
 script:
   - id
-  - docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw -e TZ=CET bagtainers/$BAGTAINER_ID
+  - docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw bagtainers/$BAGTAINER_ID
 
 notifications:
   email:

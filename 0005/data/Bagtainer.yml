@@ -1,6 +1,6 @@
 ---
-id: EFVEwqOdmh
-version: 0.3
+id: 85C6CkRzuR
+version: 0.5
 bag_mount: "/bag"
 run_mount: "/o2r_run"
 data:
@@ -10,5 +10,7 @@ data:
     container: "container"
 packages:
     - rmarkdown
-    - digest
-command: "rmarkdown::render(input = 'REAMDE.Rmd', output_format = c('md_document'))"
+environment:
+    TZ: UTC
+#    envvar: "envvarvalue"
+command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = c('pdf_document'))"

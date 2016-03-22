@@ -61,27 +61,19 @@ $ ll data/output
 * There is _no distinction between input and output directories_, just a working directory which is cloned in the container execution [EP]
   * This requires users to make sure, that their analysis overwrites existing files (not unlikely). In this example, the result can be distinguished
 * Output was created using `rmarkdown` by sourcing the script file `Bagtainer.R` from RStudio
-* Dockerfile was manually created
+* Dockerfile was manually created with `docker build -t bagtainers/0002 .`
 * The result comparison happens _in_ the container as part of executing the main script
-* Manually created files listing all the installed packages in the container directory by creating them in the Dockerfile and then extracting them from the host
+* Manually created files listing all the installed packages in the container directory by creating them with an external command
   * `user@host:.../0002/data/container$ docker exec <container_name> apt --installed list > apt-installed.txt`
   * `user@host:.../0002/data/container$ docker exec <container_name> dpkg -l > dpkg-list.txt`
 * The analysis is executed as the non-root user "docker" having the UID/GID 1000
   * The directories mounted from the host must be owned by a user with the same id!
 
-TODO:
-* Image was manually saved and removed using the following commands
-```bash
-ID=$(docker images -q bagtainer-0002)
-docker save --output $ID.tar bagtainer-0001:latest
-docker rmi 8d1075752e2e
-```
-
 ### Reproduce the analysis
 
 * Load the image with `docker load < data/container/bagtainerimage.tar`
   * image is listed in `docker images`
-* Start the image (one off run) and pass the bag and output directory: `docker run --rm --user 1000 -v $(pwd)/../..:/bag:ro -v /tmp/o2r:/o2r_run:rw 01fc22`
+* Start the image (one off run in the directory `../0002`) and pass the bag and output directory: `docker run --rm --user 1000 -v $(pwd):/bag:ro -v /tmp/o2r_run:/o2r_run:rw -e TZ=CET bagtainers/0002`
   * The bag is mounted as read only (`:ro`)
   * The run directory is mounted as read-write (`:rw`) and contains a new directory after the run named `<bagtainerid>_YYYYMMDD_HHMMSS` (the mounted directory on the host must be owned by the user with the GID `1000`)
 
@@ -142,7 +134,7 @@ root@9f5c44fdf69b:/# sha1sum /o2r_run/xyELNnSUvB_20160223_154630/wd/lab02-soluti
 A clone of `0002`, but with the following changes:
 
 * The output is a plain Markdown output document based on `rmarkdown`.
-* The volume is started with an explicit timezone, i.e. the one used during creation of the original documents. The following two commans result in same file hash for the created document `lab02-solution.md`:
+* The volume is started with an explicit timezone, i.e. the one used during creation of the original documents. The following two commands result in same file hash for the created document `lab02-solution.md`:
   * `docker run -it -v $(pwd)/0003:/bag:ro -v /tmp/o2r_run:/o2r_run:rw -v /etc/localtime:/etc/localtime:ro bagtainers/0003` > use the host system time zone
   * `docker run -it -v $(pwd)/0003:/bag:ro -v /tmp/o2r_run:/o2r_run:rw -e TZ=CET bagtainers/0003`
 * The output check function uses **only the root working directory**, so that this analysis actually succeeds. It does not compare the output images in `<wd>/lab02-solution_files`!
@@ -188,3 +180,57 @@ The command "docker run -v $(pwd)/$BAGTAINER_ID:/bag:ro -v ~/o2r/run:/o2r_run:rw
 
 Done. Your build exited with 0.
 ```
+
+
+## 0004
+
+An extension of `0003` with the following changes:
+
+* The timezone is set via `Sys.setenv()` from within the R script
+  * Setting the variable `TZ` in the container has no effect anymore
+  * Old issues are back when commenting out the environment setting in the configuration file
+  * If two file hashes differ, a `diff` is printed to the console
+* The lists of installed packages (via `apt` and `dpkg`) are created within the Dockerfile and are compared during validation
+  * If a new package is installed when running the container interactively, this fails. So the validation of the original state works.
+* `docker build -t bagtainers/0004 0004/data/container/.`
+* `docker run --rm -it -v $(pwd)/0004:/bag:ro -v /tmp/o2r_run:/o2r_run:rw bagtainers/0004`
+
+
+## 0005
+
+An adaption of `0004`, with the change that the generated output is not plain markdown, but a PDF which is compared with the R package `pdftools` by extracting the text from the PDF.
+
+* See http://ropensci.org/blog/2016/03/01/pdftools-and-jeroen
+  * output format was changed to `pdf_document` and other output files were removed
+  * install additional packages in Dockerfile
+  * extension of `Bagtainer.R` script
+  * local testing snippets
+    * `compare(pdf_text(pdf = "lab02-solution.pdf"), pdf_text("/tmp/o2r_run/85C6CkRzuR_20160322_161239/wd/lab02-solution.pdf"), allowAll = TRUE)`
+    * ` diffpdf /home/daniel/git/bagtainers/0005/data/wd/lab02-solution.pdf /tmp/o2r_run/85C6CkRzuR_20160322_161239/wd/lab02-solution.pdf`
+      * **Comparison issue**: Because of different page margins, it is not always the same text on all pages, pages 1 to 4 differ.
+      * Multiple pages with collapse works (for some page ranges, namely those without any changes of text at beginning or end): `compare(paste(pdf_text(pdf = "lab02-solution.pdf")[14:17], collapse = ""), paste(pdf_text("/tmp/o2r_run/85C6CkRzuR_20160322_161239/wd/lab02-solution.pdf")[14:17], collapse = ""), allowAll = TRUE)`
+      * `cat(paste(pdf_text(pdf = "lab02-solution.pdf")[13:14], collapse = ""), "#########\n", paste(pdf_text("/tmp/o2r_run/85C6CkRzuR_20160322_161239/wd/lab02-solution.pdf")[13:14], collapse = ""))`
+      * `paste0` or `unlist` also do not change anything - take a break!
+      * **Intermediate solution**: copy the PDF generated by the container to the wd in the container, then also `identical` works on the PDF contents
+      * Test if it catches the change in timezone (disable the `TZ` environment variable in the configuration file): *yes, but* only if `compare(..., allowAll = FALSE)`, so there seems to be some test that removes the time zone difference.
+* Move all packages that deal with comparison to the R script (out of the "user" configuration file)
+* The output of the run is `tee`d to a file `/o2r_run/o2r_<YYYYMMDD-HHMMSS>.log`
+* Changed the code to follow the linter... probably should have disabled the linter instead.
+
+
+## 0006
+
+This bag extends `0004`.
+
+**TODO**:  Regarding the process, it validates the input bag using `bagit-python`.
+
+With respect to content, it contains a GitHub repsotiry containing an R package. The repo is updated, on execution, the contained local package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted.
+
+* `Bagtainer.R` and `Bagtainer.yml` are based on `0003`. The changes are...
+  * pre-command added to update the contained repo
+  * pre-command added to set the time zone (instead of putting it explicitly in the `docker run` command in the `.travis.yml`)
+*
+
+
+* `docker build -t bagtainers/0005 0005/data/container/.`
+* `docker run --rm -it -v $(pwd)/0005:/bag:ro -v /tmp/o2r_run:/o2r_run:rw bagtainers/0005`
