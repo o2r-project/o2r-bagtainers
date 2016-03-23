@@ -36,9 +36,9 @@ RUN install2.r -r "http://cran.rstudio.com" \
 RUN apt --installed list > /apt-installed.txt \
 	&& dpkg -l > /dpkg-list.txt
 
-ENV O2R_VERSION 0.5
-ENV O2R_RUN_FILE=/bag/data/Bagtainer.R
-ENV O2R_RUN_LOG=/o2r_run/o2r_$(date +%Y%m%d-%H%M%S).log
+ENV O2R_VERSION="0.5"
+ENV O2R_RUN_FILE="/bag/data/Bagtainer.R"
+ENV O2R_RUN_LOG="/o2r_run/o2r_$(date +%Y%m%d-%H%M%S).log"
 
 # id from https://www.random.org/strings/?num=10&len=10&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
 LABEL Description="This is the second Bagtainer image, manually created." \

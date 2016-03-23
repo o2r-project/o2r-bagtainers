@@ -220,15 +220,15 @@ An adaption of `0004`, with the change that the generated output is not plain ma
 
 ## 0006
 
-This bag extends `0004`.
+This bag extends `0005`.
 
 **TODO**:  Regarding the process, it validates the input bag using `bagit-python`.
 
-With respect to content, it contains a GitHub repsotiry containing an R package. The repo is updated, on execution, the contained local package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted.
+With respect to content, it contains a GitHub repository containing an R package. The repo is updated, on execution, the contained local package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted.
 
 * `Bagtainer.R` and `Bagtainer.yml` are based on `0003`. The changes are...
-  * pre-command added to update the contained repo
-  * pre-command added to set the time zone (instead of putting it explicitly in the `docker run` command in the `.travis.yml`)
+  * `precommand` added to update the contained repo
+  * `precommand` added to set the time zone (instead of putting it explicitly in the `docker run` command in the `.travis.yml`)
 *
 
 
