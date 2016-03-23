@@ -11,6 +11,6 @@ data:
 packages:
     - rmarkdown
 environment:
-    TZ: UTC
+    TZ: CET
 #    envvar: "envvarvalue"
 command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = c('pdf_document'))"

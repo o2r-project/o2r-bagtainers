@@ -229,8 +229,6 @@ With respect to content, it contains a GitHub repository containing an R package
 * `Bagtainer.R` and `Bagtainer.yml` are based on `0003`. The changes are...
   * `precommand` added to update the contained repo
   * `precommand` added to set the time zone (instead of putting it explicitly in the `docker run` command in the `.travis.yml`)
-*
-
-
-* `docker build -t bagtainers/0005 0005/data/container/.`
-* `docker run --rm -it -v $(pwd)/0005:/bag:ro -v /tmp/o2r_run:/o2r_run:rw bagtainers/0005`
+* Build and run with the `Makefile` in the project root
+  * `make bagtainer=0006`
+  * `make bagtainer=0006 cmd=/bin/bash`
