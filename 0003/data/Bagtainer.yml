@@ -11,4 +11,4 @@ data:
 packages:
     - rmarkdown
     - digest
-command: "rmarkdown::render(input = 'REAMDE.Rmd', output_format = c('md_document'))"
+command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = c('md_document'))"
