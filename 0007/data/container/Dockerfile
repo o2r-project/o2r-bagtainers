@@ -20,7 +20,7 @@ RUN apt-get update -qq \
 
 # install more packages required by R extension packages
 RUN apt-get update -qq \
-	&& apt-get install -y --no-install-recommends --fix-missing \
+	&& apt-get install -y --no-install-recommends \
 	# required by rmarkdown:
 	lmodern \
 	pandoc \
@@ -55,6 +55,16 @@ RUN install2.r -r "http://cran.rstudio.com" \
 	  # unclear why rgdal is not a dependency in the package
 	  rgdal \
 	  && rm -rf /tmp/downloaded_packages/
+
+# install python and bagit-python
+RUN apt-get update -qq \
+	&& apt-get install -y --no-install-recommends \
+	python3 \
+	python3-pip \
+	&& apt-get clean
+RUN easy_install3 pip \
+ 	&& pip install bagit
+COPY validate.py /validate.py
 
 RUN apt --installed list > /apt-installed.txt \
 	&& dpkg -l > /dpkg-list.txt

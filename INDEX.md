@@ -165,12 +165,22 @@ On execution, the downloaded checked out package is installed, and the README do
 - **Challenge**: When installing the package from source, it requires quite a few dependencies, some of which have system dependencies, which cannot be installed automatically.
   - Could solve these by trial and error, though databases with system requirements will help in the future
   - Fix issue with Debian mirrors when running apt-get install in different cached layers of a Dockerfile, see http://stackoverflow.com/questions/35923576/debian-httpredir-mirror-system-unreliable-unusable-in-docker
-- Issues during re-run of the analysis
+- **Issues** during re-run of the analysis
   - "pandoc: Filter pandoc-citeproc not found \n Error: pandoc document conversion failed with error 85"
     - Install system dependency `pandoc-citeproc` > fixed
   - `rgdal` is not a dependecy in the package, but is needed, see https://github.com/vwmaus/dtwSat/issues/1
   - `ggplot2` is not properly loaded by the RMarkdown document, see https://github.com/vwmaus/dtwSat/issues/1
+- Validation of the input bag with `bagit-python`
+  - https://github.com/LibraryOfCongress/bagit-python
+  - Using a script copied to the container at `/validate.py`
+  - Alternatively could just use `bagit.py --validate /bag` but would not be able to exit with 1 then
 
 - Build and run with the `Makefile` in the project root, or go to bash:
   - `make bagtainer=0007`
   - `make bagtainer=0007 cmd=/bin/bash`
+
+## 0008
+Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal Data in R" by Edzer Pebesma.
+
+- https://www.jstatsoft.org/article/view/v051i07
+- https://github.com/edzer/spacetime

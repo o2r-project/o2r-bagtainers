@@ -117,6 +117,15 @@ if(o2r_isRunningInBagtainer()) {
 }
 # not comparing if running in development environment
 
+########################
+# validate the input bag
+validate_cmd <- paste("python3 /validate.py", bagtainer$bag_mount)
+cat("[o2r] Validating bag with system command '", validate_cmd, "'\n", sep = "")
+validate_result <- system(validate_cmd, wait = TRUE)
+cat("[o2r] Validation returned result '", validate_result, "' (",
+  capture.output(str(validate_result)), ")\n", sep = "")
+stopifnot(0 == validate_result)
+
 ###############
 # load packages
 cat("[o2r] Loading packages from configuration file...\n")
