@@ -153,19 +153,23 @@ TODO Jan
 ## 0007
 This bag extends `0005`.
 
-**TODO**: Fix installation of rgdal
-- `apt-cache search "^r-.*" | grep gdal` > no result
+**TODO**: Regarding the process, it validates the input bag using `bagit-python`. As argued in `0006`, the container might actauyll not be the best place to do this.
 
-**TODO**: Regarding the process, it validates the input bag using `bagit-python`.
+With respect to content, it contains the source code of an R package originally from GitHub. Not to clutter this repo with the nested repository, we clone the original repo and check out the respective tag as a precommand. The repo *should* of couse be there already, but is not in this case to have the nested repo in the bagtainer repository. Instead, we only have the files of interest there.
 
-With respect to content, it contains the source code of an R package originally from GitHub. Not to clutter this repo with the nested repository, we clone the original repo and check out the respective tag as a precommand. On execution, the downloaded checked out package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted. The output overwrites the already existing output files `README.md` with graphics in `figures`.
+On execution, the downloaded checked out package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted. The output overwrites the already existing (because they are in the repo) output files `README.md` with graphics in `figures`. For comparison, we limit this example to the created markdown file and all other files are then deleted with a postcommand.
+
 - `Bagtainer.R` and `Bagtainer.yml` are based on `0005`. The changes are...
-  - `precommand` added to update the contained repo
-  - `precommand` added to set the time zone (instead of putting it explicitly in the `docker run` command in the `.travis.yml`)
-
-- **Challenge**: When installing the package from source, it requires quite a few dependencies, some of which have system dependencies
-
-  *
+  - `precommand`s added to clone a repo and check out the required branch
+  - `postcommand` to move the file to be compared out of the downloaded repo, which is deleted.
+- **Challenge**: When installing the package from source, it requires quite a few dependencies, some of which have system dependencies, which cannot be installed automatically.
+  - Could solve these by trial and error, though databases with system requirements will help in the future
+  - Fix issue with Debian mirrors when running apt-get install in different cached layers of a Dockerfile, see http://stackoverflow.com/questions/35923576/debian-httpredir-mirror-system-unreliable-unusable-in-docker
+- Issues during re-run of the analysis
+  - "pandoc: Filter pandoc-citeproc not found \n Error: pandoc document conversion failed with error 85"
+    - Install system dependency `pandoc-citeproc` > fixed
+  - `rgdal` is not a dependecy in the package, but is needed, see https://github.com/vwmaus/dtwSat/issues/1
+  - `ggplot2` is not properly loaded by the RMarkdown document, see https://github.com/vwmaus/dtwSat/issues/1
 
 - Build and run with the `Makefile` in the project root, or go to bash:
   - `make bagtainer=0007`

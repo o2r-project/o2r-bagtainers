@@ -1,0 +1,31 @@
+---
+id: sEKdX3PjvD
+version: 0.7
+bag_mount: "/bag"
+run_mount: "/o2r_run"
+data:
+    working_directory: "wd"
+    run_file: "Bagtainer.R"
+    config_file: "Bagtainer.yml"
+    container: "container"
+packages:
+    # packages needed in commands
+    - rmarkdown
+    - git2r
+    - devtools
+    # unclear why this is not loaded by package:
+    - ggplot2
+environment:
+    TZ: CET
+precommand:
+    - "system('git config --global user.name o2r && git config --global user.email dummy@o2r.info')"
+    # the repo should of couse be there already, but is not in this case to not save the nested repo
+    - "git2r::clone(url = 'https://github.com/vwmaus/dtwSat.git', local_path = 'dtwSat')"
+    #- "repo <- git2r::repository('dtwSat')"
+    - "git2r::pull(git2r::repository('dtwSat'))"
+    - "git2r::checkout(tags(repo = git2r::repository('dtwSat'))[['draft_jss01']])"
+    - "devtools::install('dtwSat')"
+postcommand:
+    - "file.copy(from = 'dtwSat/README.md', to = 'README.md')"
+    - "unlink('dtwSat', recursive = TRUE)"
+command: "rmarkdown::render(input = 'dtwSat/README.Rmd')"
