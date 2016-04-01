@@ -50,10 +50,10 @@ RUN install2.r -r "http://cran.rstudio.com" \
 	  compare \
 	  pdftools \
 	  git2r \
-	  ggplot2 \
+	  #ggplot2 \
 	  devtools \
 	  # unclear why rgdal is not a dependency in the package
-	  rgdal \
+	  #rgdal \
 	  && rm -rf /tmp/downloaded_packages/
 
 # install python and bagit-python

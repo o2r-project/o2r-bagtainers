@@ -151,16 +151,15 @@ An adaption of `0004`, with the change that the generated output is not plain ma
 TODO Jan
 
 ## 0007
-This bag extends `0005`.
 
-**TODO**: Regarding the process, it validates the input bag using `bagit-python`. As argued in `0006`, the container might actauyll not be the best place to do this.
-
-With respect to content, it contains the source code of an R package originally from GitHub. Not to clutter this repo with the nested repository, we clone the original repo and check out the respective tag as a precommand. The repo *should* of couse be there already, but is not in this case to have the nested repo in the bagtainer repository. Instead, we only have the files of interest there.
+With respect to content, it contains the source code of the dtwSat R package originally from [GitHub](https://github.com/vwmaus/dtwSat). Not to clutter this repo with the nested repository, we clone the original repo and check out the respective tag as a precommand. The repo *should* of couse be there already, but is not in this case to have the nested repo in the bagtainer repository. Instead, we only have the files of interest there.
 
 On execution, the downloaded checked out package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted. The output overwrites the already existing (because they are in the repo) output files `README.md` with graphics in `figures`. For comparison, we limit this example to the created markdown file and all other files are then deleted with a postcommand.
 
 - `Bagtainer.R` and `Bagtainer.yml` are based on `0005`. The changes are...
   - `precommand`s added to clone a repo and check out the required branch
+    - install also the suggested packages and add `rgdal` as suggested packages to `dtwSat`, to fix the transitive suggest-dependency to `rgdal` via `raster`
+    - https://github.com/vwmaus/dtwSat/issues/1
   - `postcommand` to move the file to be compared out of the downloaded repo, which is deleted.
 - **Challenge**: When installing the package from source, it requires quite a few dependencies, some of which have system dependencies, which cannot be installed automatically.
   - Could solve these by trial and error, though databases with system requirements will help in the future
@@ -168,16 +167,24 @@ On execution, the downloaded checked out package is installed, and the README do
 - **Issues** during re-run of the analysis
   - "pandoc: Filter pandoc-citeproc not found \n Error: pandoc document conversion failed with error 85"
     - Install system dependency `pandoc-citeproc` > fixed
-  - `rgdal` is not a dependecy in the package, but is needed, see https://github.com/vwmaus/dtwSat/issues/1
-  - `ggplot2` is not properly loaded by the RMarkdown document, see https://github.com/vwmaus/dtwSat/issues/1
-- Validation of the input bag with `bagit-python`
+  - `rgdal` is not a dependecy in the package, but is needed, see https://github.com/vwmaus/dtwSat/issues/1 - add as suggested package
+    - can install suggested packages, but dependencies = TRUE does NOT install suggested packages of dependencies.
+  - `ggplot2` is not properly loaded by the RMarkdown document, see https://github.com/vwmaus/dtwSat/issues/1 - load the package in the document
+- Validation of the input bag with `bagit-python` from within the `Bagtainer.R` file
   - https://github.com/LibraryOfCongress/bagit-python
   - Using a script copied to the container at `/validate.py`
   - Alternatively could just use `bagit.py --validate /bag` but would not be able to exit with 1 then
+  - As argued in `0006`, the container might actually not be the best place to do this.
 
 - Build and run with the `Makefile` in the project root, or go to bash:
   - `make bagtainer=0007`
   - `make bagtainer=0007 cmd=/bin/bash`
+
+## 0007-1
+
+A variant of `0007` with intentional changes to file `data/wd/README.md` to check the diff functionality.
+
+- `make bagtainer=0007-1`
 
 ## 0008
 Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal Data in R" by Edzer Pebesma.

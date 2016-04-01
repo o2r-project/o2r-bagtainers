@@ -119,12 +119,15 @@ if(o2r_isRunningInBagtainer()) {
 
 ########################
 # validate the input bag
-validate_cmd <- paste("python3 /validate.py", bagtainer$bag_mount)
-cat("[o2r] Validating bag with system command '", validate_cmd, "'\n", sep = "")
-validate_result <- system(validate_cmd, wait = TRUE)
-cat("[o2r] Validation returned result '", validate_result, "' (",
-  capture.output(str(validate_result)), ")\n", sep = "")
-stopifnot(0 == validate_result)
+
+if(o2r_isRunningInBagtainer()) {
+  validate_cmd <- paste("python3 /validate.py", bagtainer$bag_mount)
+  cat("[o2r] Validating bag with system command '", validate_cmd, "'\n", sep = "")
+  validate_result <- system(validate_cmd, wait = TRUE)
+  cat("[o2r] Validation returned result '", validate_result, "' (",
+    capture.output(str(validate_result)), ")\n", sep = "")
+  stopifnot(0 == validate_result)
+}
 
 ###############
 # load packages
@@ -134,10 +137,11 @@ sapply(X = bagtainer$packages, FUN = require, character.only = TRUE)
 
 ############################
 # check the version settings
-cat("[o2r] o2r version", Sys.getenv("O2R_VERSION"), ",",
-  bagtainer$version, "(ENV,yml)\n")
-stopifnot(identical(Sys.getenv("O2R_VERSION"), as.character(bagtainer$version)))
-
+if(o2r_isRunningInBagtainer()) {
+  cat("[o2r] o2r version", Sys.getenv("O2R_VERSION"), ",",
+    bagtainer$version, "(ENV,yml)\n")
+  stopifnot(identical(Sys.getenv("O2R_VERSION"), as.character(bagtainer$version)))
+}
 
 ##################
 # run the analysis
@@ -272,13 +276,14 @@ for (i in seq(along=hashes_original)) {
   names(.orig) <- NULL
   .run <- hashes_run_output[i]
   names(.run) <- NULL
-  .identical <- identical(.orig, .run)
-  if(!.identical) {
+  identical_result <- identical(.orig, .run)
+  if(!identical_result) {
     cat("[o2r] files differ:\n")
     system(paste("diff", names(hashes_original[i]), names(hashes_run_output[i])))
+    #system(paste("diff", getwd(), "/tmp/o2r_run/sEKdX3PjvD_20160331_144226/wd"))
   }
 
-  stopifnot(identical(.orig, .run))
+  stopifnot(identical_result)
 }
 
 # compare PDFs

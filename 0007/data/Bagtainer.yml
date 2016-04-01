@@ -13,8 +13,6 @@ packages:
     - rmarkdown
     - git2r
     - devtools
-    # unclear why this is not loaded by package:
-    - ggplot2
 environment:
     TZ: CET
 precommand:
@@ -24,8 +22,8 @@ precommand:
     #- "repo <- git2r::repository('dtwSat')"
     - "git2r::pull(git2r::repository('dtwSat'))"
     - "git2r::checkout(tags(repo = git2r::repository('dtwSat'))[['draft_jss01']])"
-    - "devtools::install('dtwSat')"
+    - "devtools::install('dtwSat', dependencies = TRUE)"
 postcommand:
-    - "file.copy(from = 'dtwSat/README.md', to = 'README.md')"
+    - "file.copy(from = 'dtwSat/README.md', to = 'README.md', overwrite = TRUE)"
     - "unlink('dtwSat', recursive = TRUE)"
 command: "rmarkdown::render(input = 'dtwSat/README.Rmd')"
