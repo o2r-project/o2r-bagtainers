@@ -1,0 +1,16 @@
+---
+id: 85C6CkRzuR
+version: 0.5
+bag_mount: "/bag"
+run_mount: "/o2r_run"
+data:
+    working_directory: "wd"
+    run_file: "Bagtainer.R"
+    config_file: "Bagtainer.yml"
+    container: "."
+packages:
+    - rmarkdown
+environment:
+    TZ: CET
+#    envvar: "envvarvalue"
+command: "rmarkdown::render(input = 'lab02-solution.Rmd', output_format = c('pdf_document'))"
