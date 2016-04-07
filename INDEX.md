@@ -147,11 +147,7 @@ An adaption of `0004`, with the change that the generated output is not plain ma
 - The output of the run is `tee`d to a file `/o2r_run/o2r_<YYYYMMDD-HHMMSS>.log` using two environment variables, because variables within variables did not work
 - Changed the code to follow the linter... probably should have disabled the linter instead.
 
-## 0006
-TODO Jan
-
 ## 0007
-
 With respect to content, it contains the source code of the dtwSat R package originally from [GitHub](https://github.com/vwmaus/dtwSat). Not to clutter this repo with the nested repository, we clone the original repo and check out the respective tag as a precommand. The repo *should* of couse be there already, but is not in this case to have the nested repo in the bagtainer repository. Instead, we only have the files of interest there.
 
 On execution, the downloaded checked out package is installed, and the README document, which is R-markdown (`.Rmd`), contained in that repository is knitted. The output overwrites the already existing (because they are in the repo) output files `README.md` with graphics in `figures`. For comparison, we limit this example to the created markdown file and all other files are then deleted with a postcommand.
@@ -186,7 +182,7 @@ A variant of `0007` with intentional changes to file `data/wd/README.md` to chec
 
 - `make bagtainer=0007-1`
 
-## 0008
+## 0009
 Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal Data in R" by Edzer Pebesma.
 
 - https://www.jstatsoft.org/article/view/v051i07

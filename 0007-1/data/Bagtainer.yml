@@ -1,6 +1,6 @@
 ---
 id: sEKdX3PjvD
-version: 0.7
+version: 0.7.1
 bag_mount: "/bag"
 run_mount: "/o2r_run"
 data:
@@ -13,6 +13,8 @@ packages:
     - rmarkdown
     - git2r
     - devtools
+    # unclear why this is not loaded by package:
+    - ggplot2
 environment:
     TZ: CET
 precommand:
