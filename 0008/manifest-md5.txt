@@ -1,6 +1,7 @@
 c565ba304cf174329bd89929fa30bf1a  data/Bagtainer.R
 8fd2a745779241f3c83da989ed2d69cc  data/Bagtainer.yml
 2d79106943a96b7a15e1b6395cce612d  data/Dockerfile
+2d79106943a96b7a15e1b6395cce612d  data/container/Dockerfile
 08795330427ac40c648fa93d3260d949  data/wd/ifgi.jpg
 7b409639a376c56a0ede78d72dc27f5d  data/wd/lab02-solution.Rmd
 330a82258abe7f2e53af337aa16c6e0e  data/wd/lab02-solution.pdf
