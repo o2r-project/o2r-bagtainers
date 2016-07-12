@@ -14,6 +14,7 @@ env:
   - BAGTAINER_ID="0007"
   - BAGTAINER_ID="0007-1"
   - BAGTAINER_ID="0008"
+  - BAGTAINER_ID="0010"
 
 install:
   - docker build -t bagtainers/$BAGTAINER_ID $BAGTAINER_ID/data/container/.

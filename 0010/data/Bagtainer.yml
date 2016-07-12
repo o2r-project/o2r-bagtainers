@@ -13,8 +13,8 @@ packages:
 environment:
     TZ: CET
 precommand:
-    - output_format = rmarkdown::md_document(variant = "markdown_github", preserve_yaml = TRUE)
-    - twdtw_vignette_usecache = FALSE
+    - "output_format = rmarkdown::md_document(variant = 'markdown_github', preserve_yaml = TRUE)"
+    - "twdtw_vignette_usecache = FALSE"
 postcommand:
     #- 
 command: "rmarkdown::render(input = 'applying_twdtw.Rmd')"
