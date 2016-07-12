@@ -70,14 +70,14 @@ COPY validate.py /validate.py
 RUN apt --installed list > /apt-installed.txt \
 	&& dpkg -l > /dpkg-list.txt
 
-ENV O2R_VERSION="0.7"
+ENV O2R_VERSION="0.10"
 ENV O2R_RUN_FILE="/bag/data/Bagtainer.R"
 ENV O2R_RUN_LOG_PRE="/o2r_run/o2r_"
 ENV O2R_RUN_LOG_POST=".log"
 
 # id from https://www.random.org/strings/?num=10&len=10&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new
 LABEL Description="This is the 7th Bagtainer image, manually created." \
-	info.o2r.bag.id="sEKdX3PjvD"
+	info.o2r.bag.id="Pd2O2b2aaH"
 
 ENTRYPOINT ["sh", "-c"]
 CMD ["Rscript --vanilla ${O2R_RUN_FILE} 2>&1 | tee ${O2R_RUN_LOG_PRE}$(date +%Y%m%d-%H%M%S)${O2R_RUN_LOG_POST}"]

@@ -17,13 +17,17 @@ environment:
     TZ: CET
 precommand:
     - "system('git config --global user.name o2r && git config --global user.email dummy@o2r.info')"
-    # the repo should of couse be there already, but is not in this case to not save the nested repo
+    # the repo should of couse be part of the Bagtainer already, but is not in this (demo) case so we do not need to save the nested repo
     - "git2r::clone(url = 'https://github.com/vwmaus/dtwSat.git', local_path = 'dtwSat')"
-    #- "repo <- git2r::repository('dtwSat')"
+    - "repo <- git2r::repository('dtwSat')"
     - "git2r::pull(git2r::repository('dtwSat'))"
-    - "git2r::checkout(tags(repo = git2r::repository('dtwSat'))[['draft_jss02']])"
-    - "devtools::install('dtwSat', dependencies = TRUE)"
+    #- "git2r::checkout(tags(repo = git2r::repository('dtwSat'))[['draft_jss02']])"
+    # install from local source
+    #- "devtools::install('dtwSat', dependencies = TRUE)"
+    # install from GitHub would also work
+    #- devtools::install_github("vwmaus/dtwSat")
 postcommand:
-    - "file.copy(from = 'dtwSat/README.md', to = 'README.md', overwrite = TRUE)"
-    - "unlink('dtwSat', recursive = TRUE)"
-command: "rmarkdown::render(input = 'dtwSat/README.Rmd')"
+    #- "file.copy(from = 'dtwSat/README.md', to = 'README.md', overwrite = TRUE)"
+    #- "unlink('dtwSat', recursive = TRUE)"
+#command: "rmarkdown::render(input = 'dtwSat/README.Rmd')"
+command: "rmarkdown::render(input = 'dtwSat/vignettes/applying_twdtw.Rmd')"

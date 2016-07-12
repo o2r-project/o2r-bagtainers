@@ -73,15 +73,15 @@ $ ll data/output
 
 ### Compare the results
 - Comparison of the hashes of all files using the package `digest` picks up on the different PDFs
-- ```
-- /usr/bin/pandoc +RTS -K512m -RTS lab02-solution.utf8.md --to latex --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output lab02-solution.pdf --template /usr/local/lib/R/site-library/rmarkdown/rmd/latex/default-1.14.tex --highlight-style tango --latex-engine pdflatex --variable graphics=yes --variable 'geometry:margin=1in'
+
+```
+/usr/bin/pandoc +RTS -K512m -RTS lab02-solution.utf8.md --to latex --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash-implicit_figures --output lab02-solution.pdf --template /usr/local/lib/R/site-library/rmarkdown/rmd/latex/default-1.14.tex --highlight-style tango --latex-engine pdflatex --variable graphics=yes --variable 'geometry:margin=1in'
 
 Output created: lab02-solution.pdf [o2r] digests of original:                                              /bag/data/wd/ifgi.jpg "ab3287db74e321170944e8af7225828ed344065a125bef9fa215894009e960d2"                                    /bag/data/wd/lab02-solution.pdf "8af18372e53484882656b440d55dce1001d1b727457eb2edbded7c5c43b5631e"                                    /bag/data/wd/lab02-solution.Rmd "21b95e89093ca4f3685a81ecd860632d33bf34eabbb1e5c7830f28787c358a5c"                                           /bag/data/wd/meteo.RData "6edb27a8e60b2a48f7d95fe34d2169bc89d625b0b6cbea3fd4a02d689deaa31c" [o2r] digests of run output:                    /o2r_run/xyELNnSUvB_20160223_164908/wd/ifgi.jpg "ab3287db74e321170944e8af7225828ed344065a125bef9fa215894009e960d2"          /o2r_run/xyELNnSUvB_20160223_164908/wd/lab02-solution.pdf "11aaa4a9c6bb8c26b974c3f27276d083be4d44f9959e8e2acef77e6fcfdd28ca"          /o2r_run/xyELNnSUvB_20160223_164908/wd/lab02-solution.Rmd "21b95e89093ca4f3685a81ecd860632d33bf34eabbb1e5c7830f28787c358a5c"                 /o2r_run/xyELNnSUvB_20160223_164908/wd/meteo.RData "6edb27a8e60b2a48f7d95fe34d2169bc89d625b0b6cbea3fd4a02d689deaa31c" [o2r] file sizes of original:           /bag/data/wd/ifgi.jpg /bag/data/wd/lab02-solution.pdf                           25864                         1348576 /bag/data/wd/lab02-solution.Rmd        /bag/data/wd/meteo.RData                           13559                          236800 [o2r] file sizes of run output:           /o2r_run/xyELNnSUvB_20160223_164908/wd/ifgi.jpg                                                     25864 /o2r_run/xyELNnSUvB_20160223_164908/wd/lab02-solution.pdf                                                   1348544 /o2r_run/xyELNnSUvB_20160223_164908/wd/lab02-solution.Rmd                                                     13559        /o2r_run/xyELNnSUvB_20160223_164908/wd/meteo.RData                                                    236800 [o2r] comparing /bag/data/wd/ifgi.jpg with /o2r_run/xyELNnSUvB_20160223_164908/wd/ifgi.jpg [o2r] comparing /bag/data/wd/lab02-solution.pdf with /o2r_run/xyELNnSUvB_20160223_164908/wd/lab02-solution.pdf Error: identical(.orig, .run) is not TRUE Execution halted
 
 ```
-* Manual comparison of the sha1 of the files on command line also yields different hashes:
+- Manual comparison of the sha1 of the files on command line also yields different hashes:
 ```
-
 root@9f5c44fdf69b:/# sha1sum /bag/data/wd/lab02-solution.pdf 467355e2ee2a3ec8436f1805b05dd5f20daef8e8  /bag/data/wd/lab02-solution.pdf root@9f5c44fdf69b:/# sha1sum /o2r_run/xyELNnSUvB_20160223_154630/wd/lab02-solution.pdf 69b1a010b974b39836fad6fc2ca54490818ee85a  /o2r_run/xyELNnSUvB_20160223_154630/wd/lab02-solution.pdf
 
 ```
@@ -102,7 +102,7 @@ A clone of `0002`, but with the following changes:
 
 ### Compare the results
 
-* Comparison result as run on Travis: https://travis-ci.org/nuest/bagtainers/jobs/111497998
+- Comparison result as run on Travis: https://travis-ci.org/nuest/bagtainers/jobs/111497998
 
 ```
 /usr/bin/pandoc +RTS -K512m -RTS lab02-solution.utf8.md --to markdown_strict --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output lab02-solution.md --standalone
@@ -187,3 +187,12 @@ Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal 
 
 - https://www.jstatsoft.org/article/view/v051i07
 - https://github.com/edzer/spacetime
+
+
+## 0010
+
+Based on the vignette (to be published in JStatSoft) from the package `dtwSat`. It contains the vignette and the output files, i.e. the content from the packages `vignettes` directory together with the output as plain markdown.
+
+Changes to the vignette file:
+
+- add switch to be able to _not_ use the build in cache, see precommand `twdtw_vignette_usecache = FALSE`; if this is set to `TRUE` then the bagtainer fails because the [cache file](https://github.com/vwmaus/dtwSat/tree/master/inst/lucc_MT) is actually not included in the workspace
