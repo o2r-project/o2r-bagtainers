@@ -82,22 +82,22 @@ print(sessionInfo())
 # compare the package environments
 if(o2r_isRunningInBagtainer()) {
   cat("[o2r] Comparing installed software...\n")
-  apt_testfile <- "apt-installed-test.txt"
-  system(paste0("apt --installed list > ", apt_testfile))
+  #apt_testfile <- "apt-installed-test.txt"
+  #system(paste0("apt --installed list > ", apt_testfile))
 
-  apt_file <- file.path("/apt-installed.txt")
-  comparison_apt <- compare::compare(
-    readLines(apt_file),
-    readLines(apt_testfile),
-    allowAll = TRUE)
-  cat("[o2r] Compared apt installed packages:\n")
-  print(summary(comparison_apt))
-  if(!comparison_apt$result) {
-    cat("[o2r] apt packages diff:\n")
-    system(paste("diff", apt_file, apt_testfile))
-  }
-  unlink(apt_testfile)
-  stopifnot(comparison_apt$result)
+  #apt_file <- file.path("/apt-installed.txt")
+  #comparison_apt <- compare::compare(
+  #  readLines(apt_file),
+  #  readLines(apt_testfile),
+  #  allowAll = TRUE)
+  #cat("[o2r] Compared apt installed packages:\n")
+  #print(summary(comparison_apt))
+  #if(!comparison_apt$result) {
+  #  cat("[o2r] apt packages diff:\n")
+  #  system(paste("diff", apt_file, apt_testfile))
+  #}
+  #unlink(apt_testfile)
+  #stopifnot(comparison_apt$result)
 
   dpkg_file <- file.path("/dpkg-list.txt")
   dpkg_testfile <- "dpkg-list-test.txt"

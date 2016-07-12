@@ -191,7 +191,7 @@ Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal 
 
 ## 0010
 
-Based on the vignette (to be published in JStatSoft) from the package `dtwSat`. It contains the vignette and the output files, i.e. the content from the packages `vignettes` directory together with the output as plain markdown.
+Based on the vignette (to be published in JStatSoft) from the package `dtwSat`. It contains the vignette ([PDF version](https://github.com/vwmaus/dtwSat/blob/master/inst/doc/applying_twdtw.pdf)) and the output files, i.e. the content from the packages `vignettes` directory together with the output as plain markdown.
 
 Changes to the vignette file:
 
