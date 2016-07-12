@@ -449,7 +449,7 @@ if(exists("twdtw_vignette_usecache") && twdtw_vignette_usecache) {
   load(system.file(cacheFile, package = "dtwSat"))
 } else {
   seed <- 1
-  cat("Running partitioning and twdtw analysis using seed", seed, "\n")
+  cat("Running partitioning and twdtw analysis using seed '", seed, "'\n")
   set.seed(seed)
   # TODO could be interesting to change splitting of the training dataset
   partitions = splitDataset(field_samples_ts, p=0.1, times=100, freq = 8, formula = y ~ s(x, bs="cc"))
