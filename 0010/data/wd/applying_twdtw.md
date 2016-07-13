@@ -204,16 +204,17 @@ show(matches)
 
 To retrieve the complete information of the matches we set . We need this information for the plot methods of the class . The argument defines the time-weight to the dynamic time warping analysis \[@Maus:2016\]. By default the time-weight is zero, meaning that the function will run a standard dynamic time warping analysis. The arguments and are objects of class with the unclassified long-term time series and the temporal patterns, respectively. For details and other arguments see .
 
-In our example we use a logistic weight function for the temporal constraint of the TWDTW algorithm. This function is defined by . The package provides two in-built functions: and . The function with slope and intercept is given by \[
-    \omega = a \cdot g(t_1,t_2) + b,
-    \label{eq:lineartw}
-\] and the with midpoint , and steepness , given by \[
-    \omega = \frac{1}{1 + e^{-\alpha(g(t_1,t_2)-\beta)} }.
-    \label{eq:nonlineartw}
-\] The function \(g\) is the absolute difference in days between two dates, \(t_1\) and \(t_2\). The linear function creates a strong time constraint even for small time differences. The logistic function has a low weight for small time warps and significant costs for bigger time warps, cf. Figure . In our previous studies \[@Maus:2016\] the logistic-weight had better results than the linear-weight for land cover classification. Users can define different weight functions as temporal constraints in the argument of the method.
+In our example we use a logistic weight function for the temporal constraint of the TWDTW algorithm. This function is defined by . The package provides two in-built functions: and . The function with slope and intercept is given by
+*ω* = *a* ⋅ *g*(*t*<sub>1</sub>, *t*<sub>2</sub>)+*b*,
+ and the with midpoint , and steepness , given by
+$$
+    \\omega = \\frac{1}{1 + e^{-\\alpha(g(t\_1,t\_2)-\\beta)} }.
+    \\label{eq:nonlineartw}
+$$
+ The function *g* is the absolute difference in days between two dates, *t*<sub>1</sub> and *t*<sub>2</sub>. The linear function creates a strong time constraint even for small time differences. The logistic function has a low weight for small time warps and significant costs for bigger time warps, cf. Figure . In our previous studies \[@Maus:2016\] the logistic-weight had better results than the linear-weight for land cover classification. Users can define different weight functions as temporal constraints in the argument of the method.
 <img src="applying_twdtw_files/figure-markdown_github/logist-time-weight-1.png" alt="Logistic time-weight function \code{logisticWeight} with steepness \code{alpha=-0.1} and midpoint \code{beta=100}. The $x$ axis shows the absolute difference between two dates in days and the $y$ axis shows the time-weight \citep{Maus:2016}." width="2.7952755in" />
 <p class="caption">
-Logistic time-weight function with steepness and midpoint . The \(x\) axis shows the absolute difference between two dates in days and the \(y\) axis shows the time-weight .
+Logistic time-weight function with steepness and midpoint . The *x* axis shows the absolute difference between two dates in days and the *y* axis shows the time-weight .
 </p>
 
 Visualising the result of the TWDTW algorithm
@@ -232,7 +233,7 @@ plot(matches, type="matches", patterns.labels="Soybean", k=4)
 The four best matches of the "soybean" pattern in the time series using a logistic time-weight. The solid black line is the long-term time series; the coloured lines are the temporal patterns; and the grey dashed lines are the respective matching points.
 </p>
 
-The next example (Figure ) uses the plot type to show the alignments of the temporal patterns. We set the threshold for the dissimilarity measure to be lower than \(3.0\). This is useful to display the different subintervals of the long-term time series that have at least one alignment whose dissimilarity is less than the specified threshold.
+The next example (Figure ) uses the plot type to show the alignments of the temporal patterns. We set the threshold for the dissimilarity measure to be lower than 3.0. This is useful to display the different subintervals of the long-term time series that have at least one alignment whose dissimilarity is less than the specified threshold.
 
 ``` r
 plot(matches, type="alignments", attr = "evi", threshold = 3.0)
@@ -274,7 +275,7 @@ Input data
 
 The inputs are: *a)* the satellite images for a given geographical area, organised as a set of georeferenced raster files in GeoTIFF format, each containing all time steps of a spectral band or index; and *b)* a set of ground truth samples. The satellite images are extracted from the MODIS product MOD13Q1 collection 5 \[@Friedl:2010\] and include vegetation indexes "ndvi", "evi", and original bands "nir", "red", "blue", and "mir". This product has 250 x 250 m spatial and 16 day temporal resolution.
 
-The region is a tropical forest area in Mato Grosso, Brazil of approximately 5300 km\(^2\) with images from 2007 to 2013 (Figure ). This is a sequence of 160 images with 999 pixels each for 6 years. We also have a set of 603 ground truth samples of the following classes: "forest", "cotton-fallow", "soybean-cotton", "soybean-maize", and "soybean-millet".
+The region is a tropical forest area in Mato Grosso, Brazil of approximately 5300 km**<sup>2</sup> with images from 2007 to 2013 (Figure ). This is a sequence of 160 images with 999 pixels each for 6 years. We also have a set of 603 ground truth samples of the following classes: "forest", "cotton-fallow", "soybean-cotton", "soybean-maize", and "soybean-millet".
 
 \begin{figure}[!h]
 \begin{center} 
@@ -465,7 +466,7 @@ plot(x = land_use_maps, type = "changes")
 
 <img src="applying_twdtw_files/figure-markdown_github/plot-change-1.png" alt="Gains and losses in area from the other classes. The $y$ axis shows the actual class; the positive direction of $x$ axis shows the gains and the negative direction of $x$ axis shows the losses of the classes indicated in $y$. The colors indicate from/to which classes the gains/losses belong."  />
 <p class="caption">
-Gains and losses in area from the other classes. The \(y\) axis shows the actual class; the positive direction of \(x\) axis shows the gains and the negative direction of \(x\) axis shows the losses of the classes indicated in \(y\). The colors indicate from/to which classes the gains/losses belong.
+Gains and losses in area from the other classes. The *y* axis shows the actual class; the positive direction of *x* axis shows the gains and the negative direction of *x* axis shows the losses of the classes indicated in *y*. The colors indicate from/to which classes the gains/losses belong.
 </p>
 
 We can also look at the dissimilarity of each classified pixel setting . This plot can give a measure of the uncertainty of the classification of each pixel for each time period, cf. Figure .
@@ -520,7 +521,7 @@ t2/60
 #         user       system      elapsed 
 # 3.0679500000 0.0004333333 3.0651333333
 -->
-Figure shows the average \(\mu\) and standard deviation \(\sigma\) of *user's* and *producer's accuracy* based on a bootstrap simulation of 100 different data partitions using resampling-with-replacement. The *user's accuracy* gives the confidence and the *producer's accuracy* gives the sensitivity of the method for each class. In our analysis all classes had high *user's* and *producer's accuracy*, meaning that TWDTW has high confidence and sensitivity for the classes included in the analysis. The average, standard deviation, and the 99% confidence interval is also shown in Table .
+Figure shows the average *μ* and standard deviation *σ* of *user's* and *producer's accuracy* based on a bootstrap simulation of 100 different data partitions using resampling-with-replacement. The *user's accuracy* gives the confidence and the *producer's accuracy* gives the sensitivity of the method for each class. In our analysis all classes had high *user's* and *producer's accuracy*, meaning that TWDTW has high confidence and sensitivity for the classes included in the analysis. The average, standard deviation, and the 99% confidence interval is also shown in Table .
 <img src="applying_twdtw_files/figure-markdown_github/plot-accuracy-1.png" alt="User's Accuracy (UA) and Producer's Accuracy (PA) of the TWDTW method for land cover classification. The plot shows the averages and their confidence interval for 99\%."  />
 <p class="caption">
 User's Accuracy (UA) and Producer's Accuracy (PA) of the TWDTW method for land cover classification. The plot shows the averages and their confidence interval for 99%.
