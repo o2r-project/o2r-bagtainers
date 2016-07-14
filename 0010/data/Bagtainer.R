@@ -1,7 +1,7 @@
-require(yaml)
-require(digest)
-require(compare)
-require(pdftools)
+library(yaml)
+library(digest)
+library(compare)
+library(pdftools)
 
 bagtainer <- NA
 run_directory <- NA
@@ -132,7 +132,7 @@ if(o2r_isRunningInBagtainer()) {
 ###############
 # load packages
 cat("[o2r] Loading packages from configuration file...\n")
-sapply(X = bagtainer$packages, FUN = require, character.only = TRUE)
+sapply(X = bagtainer$packages, FUN = library, character.only = TRUE)
 
 
 ############################
