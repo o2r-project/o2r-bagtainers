@@ -1,6 +1,6 @@
 # bagtainers
 
-[![Build Status](https://travis-ci.org/nuest/bagtainers.svg?branch=master)](https://travis-ci.org/nuest/bagtainers)
+[![Build Status](https://travis-ci.org/o2r-project/bagtainers.svg?branch=master)](https://travis-ci.org/o2r-project/bagtainers)
 
 Bagtainers drafts can be found in numbered subdirectories (ordered by creation date). The documentation of each level of the development is  in the file `INDEX.md`.
 
@@ -11,10 +11,15 @@ Bagtainers drafts can be found in numbered subdirectories (ordered by creation d
 A container to upload example bagtainers to an implementation of the [o2r api](http://o2r.info/o2r-web-api) can be build and run with the following commands:
 
 ```bash
-docker build -t o2r-upload .
-docker run --rm o2r-upload -a http://172.17.0.1/api/v1/compendium -e 1
+# optinal: build and tag locally
+# docker build -t examplecompendia .
+
+docker run --rm  o2rproject/examplecompendia -a http://172.17.0.1/api/v1/compendium -e 1
 # note the returned ID
 curl http://172.17.0.1/api/v1/compendium/<compendium ID> | python -mjson.tool
+
+# upload 7 examples and selected bagtainers
+docker run --rm o2rproject/examplecompendia -a http://172.17.0.1/api/v1/compendium -e 7 -b 0003 -b 0004 -b 0005
 ```
 
 It can be used to upload multiple test compendia from o2r-muncher (`-e <number>`) or selected bagtainers from this repository (`-b XXXX`, can be used multiple times, `-b 0003 -b 0005`). The endpoint can be defined (`-a http://...`), by default it is the local docker host IP.
@@ -22,12 +27,8 @@ It can be used to upload multiple test compendia from o2r-muncher (`-e <number>`
 Once the compendia are uploaded, you can start jobs:
 
 ```bash
-docker run --rm o2r-upload -a http://172.17.0.1/api/v1/compendium -e 3 
-# docker run --rm o2r-upload -a http://172.17.0.1/api/v1/compendium -e 0 -b 0003 -b 0004
-# docker run o2r-uploader -e 1 -b 0005 -b 0003 -b 0004
-
 curl -F compendium_id=<compendium ID> http://172.17.0.1/api/v1/job
-# note the returned ID
+# note the returned job ID
 curl http://172.17.0.1/api/v1/job/<job ID> | python -mjson.tool
 ```
 
