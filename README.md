@@ -29,8 +29,10 @@ It can be used to upload multiple test compendia from o2r-muncher or selected ba
 - `-e <n>`: upload n-many test compendia, e.g. `-e 42`
 - `-b XXXX`: upload specific examples, based on directory name, e.g. `-b 0003`
   - can be used multiple times, e.g. `-b 0003 -b 0005`
-- `-a http://...`: the API endpoint, by default it is the local docker host IP: `http://172.17.0.1/api/v1/compendium`
-- `-k <key>`: the API upload key, default is `CHANGE_ME`
+- `-a http://...`: the API endpoint, e.g. `-a http://myurl/api/v1/compendium`
+  - Default it is the local docker host IP: `http://172.17.0.1/api/v1/compendium`
+- `-k <key>`: the API upload key, e.g. `-k MY_KEY`
+  - Default: `CHANGE_ME`
 
 Once the compendia are uploaded, you can start jobs:
 
