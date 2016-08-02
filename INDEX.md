@@ -193,6 +193,8 @@ Content of this bag is based on the JStatSoft paper "spacetime: Spatio-Temporal 
 
 Based on the vignette (to be published in JStatSoft) from the package `dtwSat`. It contains the vignette ([PDF version](https://github.com/vwmaus/dtwSat/blob/master/inst/doc/applying_twdtw.pdf)) and the output files, i.e. the content from the packages `vignettes` directory together with the output as plain markdown.
 
-Changes to the vignette file:
 
-- add switch to be able to _not_ use the build in cache, see precommand `twdtw_vignette_usecache = FALSE`; if this is set to `TRUE` then the bagtainer fails because the [cache file](https://github.com/vwmaus/dtwSat/tree/master/inst/lucc_MT) is actually not included in the workspace
+- Changes to the vignette file:
+  - add switch to be able to _not_ use the build in cache, see precommand `twdtw_vignette_usecache = FALSE`; if this is set to `TRUE` then the bagtainer fails because the [cache file](https://github.com/vwmaus/dtwSat/tree/master/inst/lucc_MT) is actually not included in the workspace
+- Fixes
+  - The output creation of the Markdown file different between the host laptop and the container in rendering of special characters ("omega"); not analysed further, but this is probably due to differences in underlying libs, e.g. pandoc.

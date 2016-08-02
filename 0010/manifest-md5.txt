@@ -1,4 +1,4 @@
-31890877d831a8811bd7aa1fb8641472  data/Bagtainer.R
+84e9577e29cfdd55f9b9664faa329974  data/Bagtainer.R
 41d4abdb23ca84cd681b6339f17f49ca  data/Bagtainer.yml
 ee0b981a4dd3f31948e264ac4e09d7df  data/container/Dockerfile
 4af20cb6640e0235a22dbd1bae6d3dc7  data/container/validate.py
