@@ -10,12 +10,8 @@ build:
 	docker build -t bagtainers/$(bagtainer) $(bagtainer)/data/container/.
 .PHONY: build
 
-uploader-build:
-	docker build -t o2r-uploader .
-.PHONY: uploader-run
-
-uploader-run:
-	docker run --rm o2r-uploader
+examplecompendia:
+	docker build -t examplecompendia .
 .PHONY: uploader-run
 
 run:

@@ -17,9 +17,10 @@
 #
 
 api_endpoint="http://172.17.0.1/api/v1/compendium"
+api_key="CHANGE_ME"
 example_count=0
 
-while getopts ":a:b:e:" opt; do
+while getopts ":a:b:e:k:" opt; do
   case $opt in
     # number of minimal examples
     e) example_count="$OPTARG"
@@ -28,6 +29,8 @@ while getopts ":a:b:e:" opt; do
     a) api_endpoint="$OPTARG"
     ;;
     b) bagtainers+=("$OPTARG")
+    ;;
+    k) api_key="$OPTARG"
     ;;
     \?)
     echo "Invalid option -$OPTARG" >&2
@@ -42,7 +45,7 @@ while [ "$a" -le "$example_count" ]
 do
   echo
   echo "Uploading" $a "of" $NUMBER_OF_COMPENDIA
-  curl -# -H "X-API-KEY: CHANGE_ME" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint 
+  curl -# -H "X-API-KEY: $api_key" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint 
   a=`expr $a + 1`
 done
 
@@ -59,7 +62,7 @@ then
     # upload
     echo
     echo "Uploading bagtainer" $bagtainer
-    curl -# -H "X-API-KEY: CHANGE_ME" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
+    curl -# -H "X-API-KEY: $api_key" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
   done
 fi
 echo

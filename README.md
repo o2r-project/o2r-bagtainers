@@ -14,15 +14,23 @@ A container to upload example bagtainers to an implementation of the [o2r api](h
 # optinal: build and tag locally
 # docker build -t examplecompendia .
 
-docker run --rm  o2rproject/examplecompendia -a http://172.17.0.1/api/v1/compendium -e 1
+docker run --rm  o2rproject/examplecompendia -e 1
 # note the returned ID
 curl http://172.17.0.1/api/v1/compendium/<compendium ID> | python -mjson.tool
 
-# upload 7 examples and selected bagtainers
-docker run --rm o2rproject/examplecompendia -a http://172.17.0.1/api/v1/compendium -e 7 -b 0003 -b 0004 -b 0005
+# upload 7 examples and selected bagtainers to a specific API endpoint 
+docker run --rm o2rproject/examplecompendia -a http://192.168.0.0:8088/api/v1/compendium -e 7 -b 0003 -b 0004 -b 0005
 ```
 
-It can be used to upload multiple test compendia from o2r-muncher (`-e <number>`) or selected bagtainers from this repository (`-b XXXX`, can be used multiple times, `-b 0003 -b 0005`). The endpoint can be defined (`-a http://...`), by default it is the local docker host IP.
+It can be used to upload multiple test compendia from o2r-muncher or selected bagtainers from this repository.
+
+**Parameters**
+
+- `-e <n>`: upload n-many test compendia, e.g. `-e 42`
+- `-b XXXX`: upload specific examples, based on directory name, e.g. `-b 0003`
+  - can be used multiple times, e.g. `-b 0003 -b 0005`
+- `-a http://...`: the API endpoint, by default it is the local docker host IP: `http://172.17.0.1/api/v1/compendium`
+- `-k <key>`: the API upload key, default is `CHANGE_ME`
 
 Once the compendia are uploaded, you can start jobs:
 
