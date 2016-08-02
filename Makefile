@@ -10,6 +10,14 @@ build:
 	docker build -t bagtainers/$(bagtainer) $(bagtainer)/data/container/.
 .PHONY: build
 
+uploader-build:
+	docker build -t o2r-uploader .
+.PHONY: uploader-run
+
+uploader-run:
+	docker run --rm o2r-uploader
+.PHONY: uploader-run
+
 run:
 	docker run --rm -it -v $(shell pwd)/$(bagtainer):/bag:ro -v /tmp/o2r_run:/o2r_run:rw bagtainers/$(bagtainer) $(cmd)
 .PHONY: run

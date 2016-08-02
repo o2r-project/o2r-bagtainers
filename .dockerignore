@@ -1,0 +1,7 @@
+**/*.tar
+.git*
+**/data/*
+**/*.md
+.travis.yml
+*.pl
+Makefile

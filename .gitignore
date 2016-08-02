@@ -21,5 +21,6 @@
 # temp files
 *~
 
-# large archives
+# (large) archives
 *.tar
+*.zip
