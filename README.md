@@ -11,28 +11,27 @@ Bagtainers drafts can be found in numbered subdirectories (ordered by creation d
 A container to upload example bagtainers to an implementation of the [o2r api](http://o2r.info/o2r-web-api) can be build and run with the following commands:
 
 ```bash
-# optinal: build and tag locally
-# docker build -t examplecompendia .
+# optional: build and tag locally, then also user the name 'examplecompendia' below
+#docker build -t examplecompendia .
 
-docker run --rm  o2rproject/examplecompendia -e 1
+docker run --rm  o2rproject/examplecompendia -e 1 -
 # note the returned ID
 curl http://172.17.0.1/api/v1/compendium/<compendium ID> | python -mjson.tool
 
-# upload 7 examples and selected bagtainers to a specific API endpoint 
-docker run --rm o2rproject/examplecompendia -a http://192.168.0.0:8088/api/v1/compendium -e 7 -b 0003 -b 0004 -b 0005
+# upload 7 examples and selected bagtainers to a specific API endpoint with authentication cookie
+docker run --rm o2rproject/examplecompendia -a http://192.168.0.0:8088/api/v1/compendium -c s:S1...mycookie -e 7 -b 0003 -b 0004 -b 0005
 ```
 
 It can be used to upload multiple test compendia from o2r-muncher or selected bagtainers from this repository.
 
-**Parameters**
+#### Parameters
 
 - `-e <n>`: upload n-many test compendia, e.g. `-e 42`
 - `-b XXXX`: upload specific examples, based on directory name, e.g. `-b 0003`
   - can be used multiple times, e.g. `-b 0003 -b 0005`
 - `-a http://...`: the API endpoint, e.g. `-a http://myurl/api/v1/compendium`
   - Default it is the local docker host IP: `http://172.17.0.1/api/v1/compendium`
-- `-k <key>`: the API upload key, e.g. `-k MY_KEY`
-  - Default: `CHANGE_ME`
+- `-c <cookie>`: the session cookie to authenticate the upload, e.g. `-c s:MYSESSION` (get it from the Browser after authentication)
 
 Once the compendia are uploaded, you can start jobs:
 

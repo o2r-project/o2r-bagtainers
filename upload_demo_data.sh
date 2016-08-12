@@ -17,10 +17,10 @@
 #
 
 api_endpoint="http://172.17.0.1/api/v1/compendium"
-api_key="CHANGE_ME"
+cookie="required!"
 example_count=0
 
-while getopts ":a:b:e:k:" opt; do
+while getopts ":a:b:c:e:" opt; do
   case $opt in
     # number of minimal examples
     e) example_count="$OPTARG"
@@ -30,7 +30,7 @@ while getopts ":a:b:e:k:" opt; do
     ;;
     b) bagtainers+=("$OPTARG")
     ;;
-    k) api_key="$OPTARG"
+    c) cookie="$OPTARG"
     ;;
     \?)
     echo "Invalid option -$OPTARG" >&2
@@ -39,13 +39,15 @@ while getopts ":a:b:e:k:" opt; do
   esac
 done
 
+echo "Endpoint: " $api_endpoint " Cookie: " $cookie
+
 # upload n many of the success-load example from o2r-muncher
 a=1
 while [ "$a" -le "$example_count" ]
 do
   echo
   echo "Uploading" $a "of" $NUMBER_OF_COMPENDIA
-  curl -# -H "X-API-KEY: $api_key" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint 
+  curl -# --cookie "connect.sid=$cookie" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint 
   a=`expr $a + 1`
 done
 
@@ -62,7 +64,7 @@ then
     # upload
     echo
     echo "Uploading bagtainer" $bagtainer
-    curl -# -H "X-API-KEY: $api_key" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
+    curl -# --cookie "connect.sid: $cookie" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
   done
 fi
 echo

@@ -14,6 +14,7 @@ examplecompendia:
 	docker build -t examplecompendia .
 .PHONY: uploader-run
 
+# http://stackoverflow.com/a/2826178/261210
 run:
 	docker run --rm -it -v $(shell pwd)/$(bagtainer):/bag:ro -v /tmp/o2r_run:/o2r_run:rw bagtainers/$(bagtainer) $(cmd)
 .PHONY: run
