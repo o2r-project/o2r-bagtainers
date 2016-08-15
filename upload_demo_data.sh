@@ -64,7 +64,7 @@ then
     # upload
     echo
     echo "Uploading bagtainer" $bagtainer
-    curl -# --cookie "connect.sid: $cookie" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
+    curl -# --cookie "connect.sid=$cookie" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
   done
 fi
 echo
