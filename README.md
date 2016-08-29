@@ -14,7 +14,7 @@ A container to upload example bagtainers to an implementation of the [o2r api](h
 # optional: build and tag locally, then also user the name 'examplecompendia' below
 #docker build -t examplecompendia .
 
-docker run --rm  o2rproject/examplecompendia -e 1 -
+docker run --rm  o2rproject/examplecompendia -e 1 -c s:S1...mycookie
 # note the returned ID
 curl http://172.17.0.1/api/v1/compendium/<compendium ID> | python -mjson.tool
 
