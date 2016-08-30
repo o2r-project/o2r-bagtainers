@@ -1,0 +1,19 @@
+---
+id: Pd2O2b2aaH
+version: "0.10.1"
+bag_mount: "/bag"
+run_mount: "/o2r_run"
+data:
+    working_directory: "wd"
+    run_file: "Bagtainer.R"
+    config_file: "Bagtainer.yml"
+    container: "container"
+packages:
+    - rmarkdown
+environment:
+    TZ: CET
+precommand:
+    - "twdtw_vignette_usecache <- FALSE"
+postcommand:
+    #- 
+command: "rmarkdown::render(input = 'applying_twdtw.Rmd', output_format = rmarkdown::md_document(variant = 'markdown_github', preserve_yaml = TRUE))"
