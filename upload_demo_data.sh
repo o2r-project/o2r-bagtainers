@@ -18,8 +18,9 @@
 
 api_endpoint="http://172.17.0.1/api/v1/compendium"
 example_count=0
+steps=0 # boolean
 
-while getopts ":a:b:e:" opt; do
+while getopts ":a:b:e:c:s" opt; do
   case $opt in
     # number of minimal examples
     e) example_count="$OPTARG"
@@ -29,6 +30,10 @@ while getopts ":a:b:e:" opt; do
     ;;
     b) bagtainers+=("$OPTARG")
     ;;
+    s) steps=1
+    ;;
+    c) cookie="$OPTARG"
+    ;;
     \?)
     echo "Invalid option -$OPTARG" >&2
     exit 1
@@ -36,32 +41,56 @@ while getopts ":a:b:e:" opt; do
   esac
 done
 
+echo "Running bagtainer upload container using endpoint: '"$api_endpoint"' and cookie: '"$cookie"'"
+
 # upload n many of the success-load example from o2r-muncher
 a=1
 while [ "$a" -le "$example_count" ]
 do
   echo
   echo "Uploading" $a "of" $NUMBER_OF_COMPENDIA
-  curl -# -H "X-API-KEY: CHANGE_ME" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint 
+  curl -# --cookie "connect.sid=$cookie" -F "compendium=@/bagtainers/success-load.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint | jq .
   a=`expr $a + 1`
 done
 
 # upload selected example bagtainers from o2r-bagtainers
-
 if [ "${#bagtainers[@]}" -gt "0" ]
 then
   echo
   echo ${#bagtainers[@]} "bagtainers will be zipped and uploaded:" ${bagtainers[*]}
 
   for bagtainer in ${bagtainers[@]}; do
-    # zip
-    zip -r -q $bagtainer.zip $bagtainer/*
-    # upload
+    # go to directory
+    cd /bagtainers/$bagtainer
+    # zip contents
+    zip upload.zip * --recurse-paths --quiet
+    # upload zip file
     echo
     echo "Uploading bagtainer" $bagtainer
-    curl -# -H "X-API-KEY: CHANGE_ME" -F "compendium=@/bagtainers/$bagtainer.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint
+    curl -# --cookie "connect.sid=$cookie" -F "compendium=@/bagtainers/$bagtainer/upload.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint | jq .
   done
 fi
+
+# upload all of the "steps" from the tests in o2r-muncher
+if [ "$steps" -gt "0" ]
+then
+  echo
+  echo "Example steps will be zipped and uploaded."
+
+  declare -a steps=("step_zero" "step_validate_bag" "step_validate_compendium" "step_image_build" "step_image_execute" "step_image_prepare")
+
+  for step in ${steps[@]}; do
+    # go to directory
+    cd /bagtainers/$step
+    # zip contents
+    zip upload.zip * --recurse-paths --quiet
+    # upload zip file
+    echo
+    echo "Uploading step example '"$step"'"
+    curl -# --cookie "connect.sid=$cookie" -F "compendium=@/bagtainers/$step/upload.zip;type=application/zip" -F "content_type=compendium_v1" $api_endpoint | jq .
+  done
+fi
+
 echo
 echo 
 echo "Done."

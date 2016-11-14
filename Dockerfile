@@ -21,7 +21,8 @@ RUN apk add --no-cache \
         git \
         bash \
         zip \
-    && git clone -b master https://github.com/nuest/bagtainers /bagtainers \
+        jq \
+    && git clone -b master https://github.com/o2r-project/o2r-bagtainers /bagtainers \
     && git clone -b master https://github.com/o2r-project/o2r-muncher /muncher \
     && cp -r /muncher/test/bagtainers/* /bagtainers \
     && apk del \
@@ -32,3 +33,5 @@ WORKDIR /bagtainers
 COPY upload_demo_data.sh /upload_demo_data.sh
 
 ENTRYPOINT ["bash", "/upload_demo_data.sh"]
+
+# docker build --tag o2r-upload .
